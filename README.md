@@ -57,4 +57,58 @@ class Solution {
     }
 }
       
-      
+1464. 数组中两元素的最大乘积
+      给你一个整数数组 nums，请你选择数组的两个不同下标 i 和 j，使 (nums[i]-1)*(nums[j]-1) 取得最大值。
+      请你计算并返回该式的最大值。
+      示例 1：
+      输入：nums = [3,4,5,2]
+      输出：12 
+      解释：如果选择下标 i=1 和 j=2（下标从 0 开始），则可以获得最大值，(nums[1]-1)*(nums[2]-1) = (4-1)*(5-1) = 3*4 = 12 。 
+题解：
+class Solution {
+    public int maxProduct(int[] nums) {
+        int max = 0;
+        for(int i = 0;i < nums.length - 1;i++){
+            for(int j = i + 1;j < nums.length;j++){
+                int ans = (nums[i] - 1) * (nums[j] - 1);
+                if(ans > max)   max = ans;
+            }
+        }
+        return max;
+    }
+}
+
+1038. 从二叉搜索树到更大和树
+      给出二叉 搜索 树的根节点，该二叉树的节点值各不相同，修改二叉树，使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
+      提醒一下，二叉搜索树满足下列约束条件：
+          节点的左子树仅包含键 小于 节点键的节点。
+          节点的右子树仅包含键 大于 节点键的节点。
+          左右子树也必须是二叉搜索树。
+      示例：
+      输入：[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]
+      输出：[30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]
+题解：
+思路：二叉搜索树的中序遍历是一个递增序列，题意原树中序遍历为0,1,2,3,4,5,6,7,8题意为修改后的新值为每个节点的值是原来的节点值加上所有大于它的节点值之和即累加树36,36,35,33,30,26,21,15,8
+      观察累加前中序遍历与累加后中序遍历，我们会发现，其实后者就是前者的一个从后的累加结果。那问题就迎刃而解了，我们只需反向中序遍历即可,并把每次的节点值进行累加，就能得到最终的累加树。
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int sum = 0;
+    public TreeNode bstToGst(TreeNode root) {
+        if(root != null){
+        //递归遍历树到达最右叶子节点即为值最大的节点
+            bstToGst(root.right);
+            sum += root.val;
+            root.val = sum;
+            bstToGst(root.left);
+        }
+        return root;
+    }
+}
